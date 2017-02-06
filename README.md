@@ -6,9 +6,6 @@ WakeMapper is a program that interacts with the video game Alan Wake (by Remedy 
 ![Scheme](Images/WakeMapperScreenshot2.jpg)
 ![Scheme](Images/WakeMapperScreenshot3.jpg)
 
-
-The program will only read data from the video game.
-
 You can download a binary here: https://bitbucket.org/Sofox/wakemapper/downloads/WakeMapper.exe
 
 The program is standalone, and runs without needing an install.
