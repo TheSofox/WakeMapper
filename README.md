@@ -6,7 +6,7 @@ The program will only read data from the video game, it will not modify it in an
 
 The map itself comes from a scan of offical merchandise combined with an in game texture of an in game wallmap.
 
-To download and and run the program immediately, get the program from here:
+To download and and run the program immediately, get the program from here: https://bitbucket.org/Sofox/wakemapper/downloads/WakeMapper.exe
 
 The program is standalone, no installation needed.
 
