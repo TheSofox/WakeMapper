@@ -22,6 +22,8 @@ The program is built using Microsoft Visual Studio Community 2015. This program 
 
 Visual Studio Community can be freely downloaded from: https://www.visualstudio.com , although it may require registration.
 
+Otherwise of course, you can just download the binary: https://bitbucket.org/Sofox/wakemapper/downloads/WakeMapper.exe
+
 ### Contribution guidelines ###
 
 Anyone who wants to make any modifications or additions to this program is welcome. It might be helpful to contact me first though (contact details below).
