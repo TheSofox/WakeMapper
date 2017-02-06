@@ -2,9 +2,13 @@
 
 WakeMapper is a program that interacts with the video game Alan Wake (by Remedy Entertainment) to display the player's position on a map.
 
+
 ![Scheme](Images/WakeMapperScreenshot1.jpg)
+
 ![Scheme](Images/WakeMapperScreenshot2.jpg)
+
 ![Scheme](Images/WakeMapperScreenshot3.jpg)
+
 
 You can download a binary here: https://bitbucket.org/Sofox/wakemapper/downloads/WakeMapper.exe
 
