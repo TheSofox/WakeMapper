@@ -4,12 +4,11 @@ WakeMapper is a program that interacts with the video game Alan Wake (by Remedy 
 
 The program will only read data from the video game, it will not modify it in any way. The map is displayed in the program's own window.
 
-The map itself comes from a scan of offical merchandise combined with an in game texture of an in game wallmap.
-
 To download and and run the program immediately, get the program from here: https://bitbucket.org/Sofox/wakemapper/downloads/WakeMapper.exe
 
 The program is standalone, no installation needed.
 
+The map itself comes from a scan of official merchandise (as seen here: http://alanwake.wikia.com/wiki/Bright_Falls ) combined with an in game texture of an in game wallmap.
 
 ### Build Instructions ###
 
@@ -21,7 +20,15 @@ Once installed, and the project file opened, it should be able to be built and r
 
 ### Contribution guidelines ###
 
-Anyone who wants to make any modifications or additions to this program is welcome. It might be helpful to contact me first though.
+Anyone who wants to make any modifications or additions to this program is welcome. It might be helpful to contact me first though (contact details below).
+
+
+### If you don't have Alan Wake ###
+
+Steam: http://store.steampowered.com/app/108710/
+
+GOG: https://www.gog.com/game/alan_wake (program not tested with GOG Alan Wake)
+
 
 ### Who do I talk to? ###
 
