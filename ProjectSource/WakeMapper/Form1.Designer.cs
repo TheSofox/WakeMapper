@@ -31,9 +31,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WakeMapper));
             this.startButton = new System.Windows.Forms.Button();
             this.displayOutput = new System.Windows.Forms.Label();
-            this.map = new System.Windows.Forms.PictureBox();
             this.onlineCheckbox = new System.Windows.Forms.CheckBox();
             this.onlineDisplay = new System.Windows.Forms.LinkLabel();
+            this.map = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.map)).BeginInit();
             this.SuspendLayout();
             // 
@@ -57,19 +57,6 @@
             this.displayOutput.Text = "Ready?";
             this.displayOutput.Click += new System.EventHandler(this.label1_Click);
             // 
-            // map
-            // 
-            this.map.Image = global::WakeMapper.Properties.Resources.WakeMap;
-            this.map.ImageLocation = "";
-            this.map.InitialImage = ((System.Drawing.Image)(resources.GetObject("map.InitialImage")));
-            this.map.Location = new System.Drawing.Point(12, 12);
-            this.map.Name = "map";
-            this.map.Size = new System.Drawing.Size(500, 500);
-            this.map.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.map.TabIndex = 2;
-            this.map.TabStop = false;
-            this.map.Click += new System.EventHandler(this.pictureBox1_Click);
-            // 
             // onlineCheckbox
             // 
             this.onlineCheckbox.AutoSize = true;
@@ -91,6 +78,19 @@
             this.onlineDisplay.TabIndex = 5;
             this.onlineDisplay.Visible = false;
             this.onlineDisplay.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.onlineDisplay_LinkClicked);
+            // 
+            // map
+            // 
+            this.map.Image = global::WakeMapper.Properties.Resources.WakeMap;
+            this.map.ImageLocation = "";
+            this.map.InitialImage = ((System.Drawing.Image)(resources.GetObject("map.InitialImage")));
+            this.map.Location = new System.Drawing.Point(12, 12);
+            this.map.Name = "map";
+            this.map.Size = new System.Drawing.Size(500, 500);
+            this.map.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.map.TabIndex = 2;
+            this.map.TabStop = false;
+            this.map.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // WakeMapper
             // 

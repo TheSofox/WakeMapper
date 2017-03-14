@@ -63,6 +63,16 @@ namespace WakeMapper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap FirewatchMapLarge {
+            get {
+                object obj = ResourceManager.GetObject("FirewatchMapLarge", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap WakeMap {
             get {
                 object obj = ResourceManager.GetObject("WakeMap", resourceCulture);
