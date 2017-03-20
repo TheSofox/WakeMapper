@@ -73,6 +73,106 @@ namespace WakeMapper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap TLD_CoastalRegion_Map {
+            get {
+                object obj = ResourceManager.GetObject("TLD_CoastalRegion_Map", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap TLD_CrashMountainRegion_Map {
+            get {
+                object obj = ResourceManager.GetObject("TLD_CrashMountainRegion_Map", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap TLD_DamRiverTransitionZoneB_Map {
+            get {
+                object obj = ResourceManager.GetObject("TLD_DamRiverTransitionZoneB_Map", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap TLD_Default_Map {
+            get {
+                object obj = ResourceManager.GetObject("TLD_Default_Map", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap TLD_HighwayTransitionZone_Map {
+            get {
+                object obj = ResourceManager.GetObject("TLD_HighwayTransitionZone_Map", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap TLD_LakeRegion_Map {
+            get {
+                object obj = ResourceManager.GetObject("TLD_LakeRegion_Map", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap TLD_MarshRegion_Map {
+            get {
+                object obj = ResourceManager.GetObject("TLD_MarshRegion_Map", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap TLD_RavineTransitionZone_Map {
+            get {
+                object obj = ResourceManager.GetObject("TLD_RavineTransitionZone_Map", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap TLD_RuralRegion_Map {
+            get {
+                object obj = ResourceManager.GetObject("TLD_RuralRegion_Map", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap TLD_WhalingStationRegion_Map {
+            get {
+                object obj = ResourceManager.GetObject("TLD_WhalingStationRegion_Map", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap WakeMap {
             get {
                 object obj = ResourceManager.GetObject("WakeMap", resourceCulture);

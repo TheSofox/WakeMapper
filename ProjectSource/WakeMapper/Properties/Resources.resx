@@ -121,6 +121,36 @@
   <data name="FirewatchMapLarge" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\FirewatchMapLarge.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="TLD_CoastalRegion_Map" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TLD_CoastalRegion_Map.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TLD_CrashMountainRegion_Map" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TLD_CrashMountainRegion_Map.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TLD_DamRiverTransitionZoneB_Map" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TLD_DamRiverTransitionZoneB_Map.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TLD_Default_Map" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TLD_Default_Map.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TLD_HighwayTransitionZone_Map" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TLD_HighwayTransitionZone_Map.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TLD_LakeRegion_Map" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TLD_LakeRegion_Map.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TLD_MarshRegion_Map" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TLD_MarshRegion_Map.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TLD_RavineTransitionZone_Map" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TLD_RavineTransitionZone_Map.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TLD_RuralRegion_Map" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TLD_RuralRegion_Map.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TLD_WhalingStationRegion_Map" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TLD_WhalingStationRegion_Map.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="WakeMap" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\WakeMap.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

@@ -22,7 +22,7 @@ namespace WakeMapper
         Graphics drawArea;
         Graphics buffer;
         Image mapImage;
-        String baseURL = "http://example.com/WakeMap";
+        String baseURL = "http://example.com/GameMap/";
         String onlineMessage;
         public WakeMapper()
         {
@@ -95,9 +95,27 @@ namespace WakeMapper
         
         IntPtr ProcessHandle;
   
+        class gameLevel
+        {
+            public gameLevel(string n,  double s, double xOffset, double yOffset, bool sm = true)
+            {
+                name = n;
+                scale = s;
+                xo = xOffset;
+                yo = yOffset;
+                showMarker = sm;
+            }
+            public string name { get; set; }
+            public double scale { get; set; }
+            public double xo { get; set; }
+            public double yo { get; set; }
+            public bool showMarker { get; set; }
+
+        }
         class gameProfile
         {
-            public gameProfile(string n, string fn, bool id, double s, double xOffset, double yOffset)
+            private List<gameLevel> levels = new List<gameLevel>();
+            public gameProfile(string n, string fn, bool id, double s, double xOffset, double yOffset, bool sm = true)
             {
                 name = n;
                 fullName = fn;
@@ -105,6 +123,7 @@ namespace WakeMapper
                 scale = s;
                 xo = xOffset;
                 yo = yOffset;
+                mapName = name + "Map";
             }
             public string name { get; set; }
             public string fullName { get; set; }
@@ -112,6 +131,23 @@ namespace WakeMapper
             public double scale { get; set; }
             public double xo { get; set; }
             public double yo { get; set; }
+            public bool showMarker { get; set; }
+            public string mapName { get; set; }
+            public void addLevel(string name, double scale, double xOffset, double yOffset)
+            {
+                levels.Add(new gameLevel(name, scale, xOffset, yOffset));
+            }
+            public gameLevel getLevel(string name)
+            {
+                foreach(var level in levels)
+                {
+                    if (level.name.Equals(name))
+                    {
+                        return level;
+                    }
+                }
+                return null;
+            }
 
         }
 
@@ -119,18 +155,29 @@ namespace WakeMapper
         gameProfile currentProfile = null;
         private void initGameProfiles()
         {
+            gameProfile wakeProfile = new gameProfile("AlanWake", "Alan Wake", true, 4.1333 * 2, 460, 453);
+            gameProfile firewatchProfile = new gameProfile("Firewatch", "Firewatch", false, -1.93, 698 * 2, -175 * 2);
+            gameProfile tldProfile = new gameProfile("tld", "The Long Dark", false, 1637.0 / 805, 98, 883);
+
+            tldProfile.addLevel("LakeRegion", 1637.0 / 805, 98, 883);
+            tldProfile.addLevel("RavineTransitionZone", 1637.0 / 805, 772, 421-332);
+            tldProfile.addLevel("CoastalRegion", 2400.0 / 973, 538, 650); // 2.461538461538462, 538, 650);
+            tldProfile.addLevel("WhalingStationRegion", 1100.0/915, -52, 1548);
+            tldProfile.addLevel("RuralRegion", 2700.0 / 927, -28, 1017);
+            tldProfile.addLevel("CrashMountainRegion", 1800.0 / 947, -25, 1000);
+            tldProfile.addLevel("MarshRegion", 1900.0 / 985, 63, 885);
+            tldProfile.addLevel("DamRiverTransitionZoneB", 900.0 / 890, -335, 710);
+            tldProfile.addLevel("HighwayTransitionZone", 900.0 / 887, 20, 560);
+
+
+
             if (Environment.Is64BitProcess)
             {
-                gameProfiles = new gameProfile[] {
-                new gameProfile("AlanWake", "Alan Wake", true, 4.1333 *4,460/2, 453/2),
-                new gameProfile("Firewatch", "Firewatch", false, -1.93*2,698, -175)
-            };
+                gameProfiles = new gameProfile[] { wakeProfile, firewatchProfile, tldProfile };
             }
             else
             {
-                gameProfiles = new gameProfile[] {
-                new gameProfile("AlanWake", "Alan Wake", true, 4.1333 *4,460/2, 453/2)
-            };
+                gameProfiles = new gameProfile[] { wakeProfile };
             }
         }
 
@@ -139,15 +186,15 @@ namespace WakeMapper
 
         }
         HttpClient client = new HttpClient();
-        private void sendCoord(double north, double east)
+        private void sendCoord(double x, double y)
         {
 
-            client.GetAsync(baseURL + "/set.php?game=" + currentProfile.name + "&key=woken&n=" + north + "&e=" + east);
+            client.GetAsync(baseURL + "/set.php?game=" + currentProfile.mapName + "&key=genwoken&x=" + x + "&y=" + y);
         }
 
         int mode = 0;
 
-        private Tuple<int,int> wakeToMap(double n, double e)
+        private Tuple<double,double> wakeToMap(double n, double e, double mapSize)
         {
             var scale = currentProfile.scale;//4.1333 *4;
             var xo = currentProfile.xo;
@@ -155,9 +202,10 @@ namespace WakeMapper
             var my = yo - (n / scale);
 
             var mx = xo + (e / scale);
-            
 
-            return Tuple.Create((int)mx, (int)my);
+            var mapScale = mapSize / 1000;
+
+            return Tuple.Create(mx* mapScale, my* mapScale);
         }
 
         Pen pen = new Pen(Color.Red);
@@ -165,7 +213,7 @@ namespace WakeMapper
         int lastX; int lastY;
         private void drawMap(double north, double east)
         {
-            var res = wakeToMap(north, east);
+            var res = wakeToMap(north, east, 500);
 
             /*var srcRect = new Rectangle(lastX*4, lastY*4, 40, 40);
             var destRect = new Rectangle(lastX, lastY, 10, 10);
@@ -177,43 +225,86 @@ namespace WakeMapper
             var radius = 5;
             // drawArea.DrawArc(pen, res.Item1, res.Item2, radius, radius, 0, 360);
             //drawArea.DrawEllipse(pen, res.Item1 - radius, res.Item2 - radius, radius * 2, radius * 2);
-            buffer.FillEllipse(brush, res.Item1 - radius, res.Item2 - radius, radius * 2, radius * 2);
+            int x = (int)res.Item1;
+            int y = (int)res.Item2;
+
+            buffer.FillEllipse(brush, x - radius, y - radius, radius * 2, radius * 2);
             
-            lastX = res.Item1;
-            lastY = res.Item2;
+            lastX = x;
+            lastY = y;
 
             drawArea.DrawImage(bufferBitmap, 0, 0, map.Width, map.Height);
             // drawArea.Clear(Color.Beige);
 
         }
-        IntPtr northAddress, eastAddress;
+        IntPtr northAddress, eastAddress, heightAddress = IntPtr.Zero;
+        string currentLevel = "";
         private void getWakePosition(Object myObject,
                                             EventArgs myEventArgs)
         {
-            double north, east;
+            bool enableMapDraw = true;
+            string extraText = "";
+            double north, east,height =0;
             if (currentProfile.isDouble)
             {
                 byte[] northBytes = new byte[8];
                 ReadProcessMemory(ProcessHandle, northAddress, northBytes, (UIntPtr)northBytes.Length, 0);
                 byte[] eastBytes = new byte[8];
                 ReadProcessMemory(ProcessHandle, eastAddress, eastBytes, (UIntPtr)eastBytes.Length, 0);
+                if (heightAddress != IntPtr.Zero)
+                {
+                    byte[] heightBytes = new byte[8];
+                    ReadProcessMemory(ProcessHandle, heightAddress, heightBytes, (UIntPtr)heightBytes.Length, 0);
+                    height = BitConverter.ToDouble(heightBytes, 0);
+                }
                 north = BitConverter.ToDouble(northBytes, 0);
                 east = BitConverter.ToDouble(eastBytes, 0);
             } else
             {
+                if (heightAddress != IntPtr.Zero)
+                {
+                    byte[] heightBytes = new byte[4];
+                    ReadProcessMemory(ProcessHandle, heightAddress, heightBytes, (UIntPtr)heightBytes.Length, 0);
+                    height = BitConverter.ToSingle(heightBytes, 0);
+                }
+
                 byte[] northBytes = new byte[4];
                 ReadProcessMemory(ProcessHandle, northAddress, northBytes, (UIntPtr)northBytes.Length, 0);
                 byte[] eastBytes = new byte[4];
                 ReadProcessMemory(ProcessHandle, eastAddress, eastBytes, (UIntPtr)eastBytes.Length, 0);
                 north = BitConverter.ToSingle(northBytes, 0);
                 east = BitConverter.ToSingle(eastBytes, 0);
+
+                if (currentProfile.name == "tld")
+                {
+                    extraText = readString(tld_activeScene);
+                    if (false==currentLevel.Equals(extraText))
+                    {
+                        currentLevel = extraText;
+                        var level = currentProfile.getLevel(currentLevel);
+                        if (level != null)
+                        {
+                            mapImage = (Image)Properties.Resources.ResourceManager.GetObject("TLD_"+level.name+"_Map");
+                            currentProfile.mapName = "TLD_" + level.name + "_Map";
+                            currentProfile.scale = level.scale;
+                            currentProfile.xo = level.xo;
+                            currentProfile.yo = level.yo;
+                        }
+                    }
+                    if (currentProfile.getLevel(currentLevel) == null && !currentLevel.Equals(""))
+                    {
+                        enableMapDraw = false;
+                    }
+                }
+                
             }
-            displayOutput.Text = "Running. You're at: " + north + "  " + east;
-            if(north!=0 && east != 0)
+            displayOutput.Text = "Running. You're at: " + north + "  " + east + "\n" + extraText;//" (" + height + ") "
+            if (north!=0 && east != 0 && enableMapDraw)
             {
                 if (onlineCheckbox.Checked)
                 {
-                    sendCoord(north, east);
+                    var res = wakeToMap(north, east, 1000);
+                    sendCoord(res.Item1, res.Item2);
                 }
                 drawMap(north, east);
             }
@@ -271,30 +362,7 @@ namespace WakeMapper
                 eastAddress = IntPtr.Add(modAddr, 0x137A44);
 
                 setupExecutable(process);
-
             }
-             /*
-            hModuleSnap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, dwPID)
-
-           
-            foreach (ProcessModule module in process.Modules)
-                {
-                    if (module.ModuleName == "renderer_sf_Win32.dll")
-                    {
-                        //Console.WriteLine(module.FileName);
-                        //Console.WriteLine("Process loaded at 0x{0:X16}", (long)process.Handle);
-                        //Console.WriteLine("DLL loaded at 0x{0:X16}", (long)module.BaseAddress);
-
-                        northAddress = IntPtr.Add(module.BaseAddress, 0x137A54);
-                        eastAddress = IntPtr.Add(module.BaseAddress, 0x137A44);
-
-                        setupExecutable(process);
-
-
-
-                    }
-
-                }*/
 
         }
         private void stopExecutable()
@@ -358,11 +426,9 @@ namespace WakeMapper
                 eastAddress = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x07C8);
                 northAddress = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x07D0);
 
-                ReadProcessMemory(ProcessHandle, addr, testBytes, (UIntPtr)testBytes.Length, 0);
+               // ReadProcessMemory(ProcessHandle, addr, testBytes, (UIntPtr)testBytes.Length, 0);
 
                 //IntPtr Base1 = IntPtr.Add((IntPtr)vam.ReadInt32(BaseAddress), 0x58);
-
-
                 //displayOutput.Text = BitConverter.ToSingle(testBytes,0).ToString();
                 setupExecutable(nProcess);
 
@@ -375,6 +441,95 @@ namespace WakeMapper
             }
 
 
+        }
+
+        public string readString(IntPtr address)
+        {
+            byte[] testBytes = new byte[4];
+            ReadProcessMemory(ProcessHandle, address, testBytes, (UIntPtr)testBytes.Length, 0);
+            IntPtr strAddr = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 8);
+            ReadProcessMemory(ProcessHandle, strAddr, testBytes, (UIntPtr)testBytes.Length, 0);
+            Int32 length = BitConverter.ToInt32(testBytes, 0)*2;
+            byte[] stringBytes = new byte[length];
+
+            strAddr = IntPtr.Add(strAddr, 4);
+            ReadProcessMemory(ProcessHandle, strAddr, stringBytes, (UIntPtr)stringBytes.Length, 0);
+
+            return Encoding.Unicode.GetString(stringBytes);
+        }
+
+        IntPtr tld_gameManager, tld_activeScene;
+        public void setupTheLongDark(Process nProcess)
+        {
+            currentLevel = "";
+            mapImage = Properties.Resources.TLD_Default_Map;
+            map.Image = mapImage;
+            currentProfile.mapName = "TLD_Default_Map";
+            sendCoord(-100, -100);
+            try
+            {
+                ProcessHandle = OpenProcess(0x10, false, (uint)nProcess.Id);
+                mode = 1;
+                IntPtr addr;
+                byte[] testBytes = new byte[4];
+
+                IntPtr modAddr = getProcessModuleBaseAddress(nProcess, "mono.dll");
+
+                //Console.WriteLine(module.FileName);
+                //Console.WriteLine("Process loaded at 0x{0:X16}", (long)process.Handle);
+                //Console.WriteLine("DLL loaded at 0x{0:X16}", (long)module.BaseAddress);
+
+                addr = IntPtr.Add(modAddr, 0x0020B574);
+                ReadProcessMemory(ProcessHandle, addr, testBytes, (UIntPtr)testBytes.Length, 0);
+                addr = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x10);
+
+                ReadProcessMemory(ProcessHandle, addr, testBytes, (UIntPtr)testBytes.Length, 0);
+                tld_gameManager = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x26C);
+
+                ReadProcessMemory(ProcessHandle, tld_gameManager, testBytes, (UIntPtr)testBytes.Length, 0);
+                tld_activeScene = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x3c);
+
+
+
+                //ReadProcessMemory(ProcessHandle, tld_activeScene, testBytes, (UIntPtr)testBytes.Length, 0);
+                //int length; = BitConverter.ToInt32(testBytes, 0).ToString();
+                //displayOutput.Text = BitConverter.ToString(testBytes, 0);
+                //displayOutput.Text = BitConverter.ToString(testBytes, 0);//BitConverter.ToInt32(testBytes, 0).ToString();// "test";// BitConverter.ToSingle(testBytes, 0).ToString();// BitConverter.ToSingle(testBytes, 0);
+                
+                // eastAddress = IntPtr.Add(module.BaseAddress, 0x137A44);
+
+
+                //IntPtr Base1 = IntPtr.Add((IntPtr)vam.ReadInt32(BaseAddress), 0x58);
+                //displayOutput.Text = BitConverter.ToSingle(testBytes,0).ToString();
+
+                /*
+                 "mono.dll"+001F60D4
+                 */
+
+                addr = IntPtr.Add(nProcess.MainModule.BaseAddress, 0x01020110);// (IntPtr)0x01348320;// IntPtr.Add(IntPtr.Zero, 0x00265C4A);// 0x137A54);//0x00265C4A
+
+                ReadProcessMemory(ProcessHandle, addr, testBytes, (UIntPtr)testBytes.Length, 0);
+
+                addr = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x60);
+                ReadProcessMemory(ProcessHandle, addr, testBytes, (UIntPtr)testBytes.Length, 0);
+                
+
+                //addr = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x7A8);
+                //ReadProcessMemory(ProcessHandle, addr, testBytes, (UIntPtr)testBytes.Length, 0);
+
+                //displayOutput.Text = BitConverter.ToSingle(testBytes, 0).ToString();// BitConverter.ToSingle(testBytes, 0);
+
+
+                eastAddress = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x06D0);
+                heightAddress = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x06D4);
+                northAddress = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x06D8);
+
+               setupExecutable(nProcess);
+            }
+            catch
+            {
+                Console.WriteLine("Failed to open process");
+            }
         }
 
 
@@ -402,10 +557,11 @@ namespace WakeMapper
                             case "Firewatch":
                                 setupFirewatch(procs[0]);
                                 break;
+                            case "tld":
+                                setupTheLongDark(procs[0]);
+                                break;
                             default:
                                 continue;
-
-
                         }
                         break;
                     }

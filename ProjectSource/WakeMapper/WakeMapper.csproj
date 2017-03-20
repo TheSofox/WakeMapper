@@ -113,6 +113,17 @@
   <ItemGroup>
     <None Include="Resources\FirewatchMap.bmp" />
     <None Include="Resources\FirewatchMapLarge.jpg" />
+    <None Include="Resources\TLD_MysteryLakeMap.jpg" />
+    <None Include="Resources\TLD_Default_Map.jpg" />
+    <None Include="Resources\TLD_WhalingStationRegion_Map.jpg" />
+    <None Include="Resources\TLD_RuralRegion_Map.jpg" />
+    <None Include="Resources\TLD_LakeRegion_Map.jpg" />
+    <None Include="Resources\TLD_CrashMountainRegion_Map.jpg" />
+    <None Include="Resources\TLD_MarshRegion_Map.jpg" />
+    <None Include="Resources\TLD_DamRiverTransitionZoneB_Map.jpg" />
+    <None Include="Resources\TLD_CoastalRegion_Map.jpg" />
+    <None Include="Resources\TLD_RavineTransitionZone_Map.jpg" />
+    <None Include="Resources\TLD_HighwayTransitionZone_Map.jpg" />
     <Content Include="Resources\WakeMapper.ico" />
     <Content Include="WakeMapper.ico" />
   </ItemGroup>
