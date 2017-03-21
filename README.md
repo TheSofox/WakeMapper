@@ -46,6 +46,7 @@ The Long Dark created by Hinterland Games
 
 The Steam version of all games were tested with this program on a 64 bit Windows 7 PC
 
+GIMP image editor was often used to edit, tweak and scale maps.
 
 ### Who do I talk to? ###
 
