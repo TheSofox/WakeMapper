@@ -12,7 +12,7 @@ WakeMapper is a program that interacts with video games to display the player's 
 # Download #
 64 bit version (supports all games): https://bitbucket.org/Sofox/wakemapper/downloads/WakeMapper64.exe
 
-32 bit version (only supports Alan Wake): https://bitbucket.org/Sofox/wakemapper/downloads/WakeMapper64.exe
+32 bit version (only supports Alan Wake): https://bitbucket.org/Sofox/wakemapper/downloads/WakeMapper.exe
 
 The program is standalone, and runs without needing an install.
 
