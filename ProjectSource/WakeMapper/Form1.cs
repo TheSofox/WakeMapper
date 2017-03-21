@@ -189,7 +189,7 @@ namespace WakeMapper
         private void sendCoord(double x, double y)
         {
 
-            client.GetAsync(baseURL + "/set.php?game=" + currentProfile.mapName + "&key=genwoken&x=" + x + "&y=" + y);
+            client.GetAsync(baseURL + "/set.php?game=" + currentProfile.mapName + "&key=key&x=" + x + "&y=" + y);
         }
 
         int mode = 0;
