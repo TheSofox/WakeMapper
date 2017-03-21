@@ -48,6 +48,8 @@ The Steam version of all games were tested with this program on a 64 bit Windows
 
 GIMP image editor was often used to edit, tweak and scale maps.
 
+Cheat Engine ( http://www.cheatengine.org ) played an invaluable part in finding the player position values in memory, and helping me access them even if the game restarts. 
+
 ### Who do I talk to? ###
 
 Sofox is the owner of the project. Email at sofoxx [-at-] gmail [*dot*] com
