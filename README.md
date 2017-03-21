@@ -30,7 +30,7 @@ Anyone who wants to make any modifications or additions to this program is welco
 ### Map credits ###
 The Alan Wake map comes from a scan of official merchandise (as seen here: http://alanwake.wikia.com/wiki/Bright_Falls ) combined with an in game texture of an in game wallmap.
 
-The Firewatch map technically comes from a in game texture, but more accurately comes from a "clean" high res version of that texture provided by the game's developers: http://blog.camposanto.com/post/140041752129/downloadable-printable-firewatch-maps-for-you-a
+The Firewatch map technically comes from an in game texture, but more accurately comes from a "clean" high res version of that texture provided by the game's developers: http://blog.camposanto.com/post/140041752129/downloadable-printable-firewatch-maps-for-you-a
 
 The Long Dark maps, with the exception of the overview map (provided by the dev team), were created by Whiteberry (@toarda). You can see all her maps (including some versions that have more information) here: https://steamcommunity.com/sharedfiles/filedetails/?id=530202531
 
