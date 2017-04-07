@@ -394,6 +394,7 @@ namespace WakeMapper
         private void setupWake(Process process)
         {
             mapImage = Properties.Resources.WakeMap;
+            map.Image = mapImage;
             //displayOutput.Text = "Okay, Alan Wake is running, let's see what we can do....\n";
             IntPtr modAddr = getProcessModuleBaseAddress(process, "renderer_sf_Win32.dll");
             if (modAddr != IntPtr.Zero)
@@ -434,6 +435,7 @@ namespace WakeMapper
         public void setupFirewatch(Process nProcess)
         {
             mapImage = Properties.Resources.FirewatchMapLarge;
+            map.Image = mapImage;
             try
             {
                 //  var mod = nProcess.MainModule.BaseAddress;
