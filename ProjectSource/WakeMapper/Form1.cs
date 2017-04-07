@@ -29,19 +29,31 @@ namespace WakeMapper
             InitializeComponent();
             initGameProfiles();
             myTimer.Tick += new EventHandler(getWakePosition);
-            drawArea = map.CreateGraphics();
-            
-            
+
+
+            setupMap();
 
             mapImage = map.Image;
-            bufferBitmap = new Bitmap(map.Width, map.Height);
-            buffer = Graphics.FromImage(bufferBitmap);
 
             onlineMessage = "You can now see this at: " + baseURL;
             onlineDisplay.Text = onlineMessage;
             onlineDisplay.LinkArea = new System.Windows.Forms.LinkArea(onlineDisplay.Text.IndexOf(baseURL), onlineDisplay.Text.Length);
             onlineDisplay.Text = "";
         }
+        bool justResized = false;
+        private void setupMap()
+        {
+            drawArea = map.CreateGraphics();
+            bufferBitmap = new Bitmap(map.Width, map.Height);
+            buffer = Graphics.FromImage(bufferBitmap);
+            justResized = true;
+        }
+
+        private void map_Resize(object sender, EventArgs e)
+        {
+            setupMap();
+        }
+
         [DllImport("kernel32.dll")]
         static extern IntPtr OpenProcess(UInt32 dwDesiredAccess, Boolean bInheritHandle, UInt32 dwProcessId);
         [DllImport("kernel32.dll")]
@@ -213,27 +225,55 @@ namespace WakeMapper
         int lastX; int lastY;
         private void drawMap(double north, double east)
         {
-            var res = wakeToMap(north, east, 500);
+            var lowest = map.Width < map.Height ? map.Width : map.Height;
 
-            /*var srcRect = new Rectangle(lastX*4, lastY*4, 40, 40);
-            var destRect = new Rectangle(lastX, lastY, 10, 10);
+            var markerSize = lowest / 100;
+            if (markerSize < 4)
+                markerSize = 4;
+
+            var xBorder = map.Width > lowest ? (map.Width - lowest) / 2 : 0;
+            var yBorder = map.Height > lowest ? (map.Height - lowest) / 2 : 0;
+
+          
+
+            var res = wakeToMap(north, east, lowest);// 500);
+
+            buffer.DrawImage(mapImage, xBorder, yBorder, lowest, lowest);
+            
+            /*
+            if (justResized)
+            {
+                buffer.DrawImage(mapImage, xBorder, yBorder, lowest, lowest);
+                justResized = false;
+            } else
+            {
+                var ratio = mapImage.Width / lowest; 
+                var srcRect = new Rectangle((lastX-xBorder) * ratio, (lastY - yBorder) * ratio, markerSize * 2 *ratio, markerSize * 2 * ratio);
+                var destRect = new Rectangle(lastX, lastY, markerSize*2, markerSize*2);
+                buffer.DrawImage(mapImage, destRect, srcRect, GraphicsUnit.Pixel); 
+            }*/
+
+            /*
+            
             drawArea.DrawImage(mapImage,destRect,srcRect,GraphicsUnit.Pixel);*/
-            buffer.DrawImage(mapImage, 0, 0, map.Width, map.Height); 
 
-            pen.Width = 5;
+            //buffer.DrawImage(mapImage, 0, 0, map.Width, map.Height); 
+
+            
             //drawArea.DrawLine(pen, new Point(0, 0), new Point(100, 100));
-            var radius = 5;
+            var radius = markerSize;
             // drawArea.DrawArc(pen, res.Item1, res.Item2, radius, radius, 0, 360);
             //drawArea.DrawEllipse(pen, res.Item1 - radius, res.Item2 - radius, radius * 2, radius * 2);
-            int x = (int)res.Item1;
-            int y = (int)res.Item2;
+            int x = (int)res.Item1 + xBorder;
+            int y = (int)res.Item2 + yBorder;
 
             buffer.FillEllipse(brush, x - radius, y - radius, radius * 2, radius * 2);
             
             lastX = x;
             lastY = y;
+            //buffer.FillRectangle(brush, new RectangleF(0, 0, 100, 100));
 
-            drawArea.DrawImage(bufferBitmap, 0, 0, map.Width, map.Height);
+            drawArea.DrawImage(bufferBitmap, 0, 0);
             // drawArea.Clear(Color.Beige);
 
         }
@@ -592,6 +632,7 @@ namespace WakeMapper
         {
 
         }
+
 
         private void onlineCheckbox_CheckedChanged(object sender, EventArgs e)
         {

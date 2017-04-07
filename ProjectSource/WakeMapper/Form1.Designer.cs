@@ -39,7 +39,8 @@
             // 
             // startButton
             // 
-            this.startButton.Location = new System.Drawing.Point(437, 518);
+            this.startButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.startButton.Location = new System.Drawing.Point(576, 514);
             this.startButton.Name = "startButton";
             this.startButton.Size = new System.Drawing.Size(75, 23);
             this.startButton.TabIndex = 0;
@@ -49,8 +50,9 @@
             // 
             // displayOutput
             // 
+            this.displayOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.displayOutput.AutoSize = true;
-            this.displayOutput.Location = new System.Drawing.Point(12, 518);
+            this.displayOutput.Location = new System.Drawing.Point(12, 514);
             this.displayOutput.Name = "displayOutput";
             this.displayOutput.Size = new System.Drawing.Size(44, 13);
             this.displayOutput.TabIndex = 1;
@@ -59,8 +61,9 @@
             // 
             // onlineCheckbox
             // 
+            this.onlineCheckbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.onlineCheckbox.AutoSize = true;
-            this.onlineCheckbox.Location = new System.Drawing.Point(377, 547);
+            this.onlineCheckbox.Location = new System.Drawing.Point(516, 543);
             this.onlineCheckbox.Name = "onlineCheckbox";
             this.onlineCheckbox.Size = new System.Drawing.Size(135, 17);
             this.onlineCheckbox.TabIndex = 3;
@@ -71,8 +74,9 @@
             // 
             // onlineDisplay
             // 
+            this.onlineDisplay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.onlineDisplay.AutoSize = true;
-            this.onlineDisplay.Location = new System.Drawing.Point(12, 547);
+            this.onlineDisplay.Location = new System.Drawing.Point(12, 543);
             this.onlineDisplay.Name = "onlineDisplay";
             this.onlineDisplay.Size = new System.Drawing.Size(0, 13);
             this.onlineDisplay.TabIndex = 5;
@@ -81,22 +85,26 @@
             // 
             // map
             // 
+            this.map.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.map.Image = global::WakeMapper.Properties.Resources.WakeMap;
             this.map.ImageLocation = "";
             this.map.InitialImage = ((System.Drawing.Image)(resources.GetObject("map.InitialImage")));
             this.map.Location = new System.Drawing.Point(12, 12);
             this.map.Name = "map";
-            this.map.Size = new System.Drawing.Size(500, 500);
-            this.map.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.map.Size = new System.Drawing.Size(642, 496);
+            this.map.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.map.TabIndex = 2;
             this.map.TabStop = false;
             this.map.Click += new System.EventHandler(this.pictureBox1_Click);
+            this.map.Resize += new System.EventHandler(this.map_Resize);
             // 
             // WakeMapper
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(527, 570);
+            this.ClientSize = new System.Drawing.Size(666, 566);
             this.Controls.Add(this.onlineDisplay);
             this.Controls.Add(this.onlineCheckbox);
             this.Controls.Add(this.map);
