@@ -430,7 +430,13 @@ namespace WakeMapper
         }
         static System.Windows.Forms.Timer myTimer = new System.Windows.Forms.Timer();
 
+        public IntPtr getOffsetValue(IntPtr ProcessHandle, IntPtr addr, Int32 offset)
+        {
+            byte[] testBytes = new byte[4];
+            ReadProcessMemory(ProcessHandle, addr, testBytes, (UIntPtr)testBytes.Length, 0);
+            return IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), offset);
 
+        }
 
         public void setupFirewatch(Process nProcess)
         {
@@ -451,18 +457,10 @@ namespace WakeMapper
                 IntPtr addr = IntPtr.Add(nProcess.MainModule.BaseAddress, 0x01348320);// (IntPtr)0x01348320;// IntPtr.Add(IntPtr.Zero, 0x00265C4A);// 0x137A54);//0x00265C4A
 
                 byte[] testBytes = new byte[4];
-                ReadProcessMemory(ProcessHandle, addr, testBytes, (UIntPtr)testBytes.Length, 0);
-
-                addr = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x4B0);
-                ReadProcessMemory(ProcessHandle, addr, testBytes, (UIntPtr)testBytes.Length, 0);
-
-                addr = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x18);
-                ReadProcessMemory(ProcessHandle, addr, testBytes, (UIntPtr)testBytes.Length, 0);
-
-                addr = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x18);
-                ReadProcessMemory(ProcessHandle, addr, testBytes, (UIntPtr)testBytes.Length, 0);
-
-                addr = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x10);
+                addr = getOffsetValue(ProcessHandle, addr, 0x4B0);
+                addr = getOffsetValue(ProcessHandle, addr, 0x18);
+                addr = getOffsetValue(ProcessHandle, addr, 0x18);
+                addr = getOffsetValue(ProcessHandle, addr, 0x10);
                 ReadProcessMemory(ProcessHandle, addr, testBytes, (UIntPtr)testBytes.Length, 0);
 
                 eastAddress = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x07C8);
