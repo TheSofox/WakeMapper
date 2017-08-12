@@ -23,7 +23,8 @@ namespace WakeMapper
         Graphics drawArea;
         Graphics buffer;
         Image mapImage;
-        String baseURL = "http://example.com/GameMap/";
+        String baseURL = "";
+        String urlKey = "";
         String onlineMessage;
         public WakeMapper()
         {
@@ -40,6 +41,9 @@ namespace WakeMapper
             onlineDisplay.Text = onlineMessage;
             onlineDisplay.LinkArea = new System.Windows.Forms.LinkArea(onlineDisplay.Text.IndexOf(baseURL), onlineDisplay.Text.Length);
             onlineDisplay.Text = "";
+
+            if (baseURL.Length > 0)
+                onlineCheckbox.Visible = true;
         }
         bool justResized = false;
         private void setupMap()
@@ -201,8 +205,8 @@ namespace WakeMapper
         HttpClient client = new HttpClient();
         private void sendCoord(double x, double y)
         {
-
-            client.GetAsync(baseURL + "/set.php?game=" + currentProfile.mapName + "&key=key&x=" + x + "&y=" + y);
+            baseURL.TrimEnd('/');
+            client.GetAsync(baseURL + "/set.php?game=" + currentProfile.mapName + "&key=" + urlKey + "&x=" + x + "&y=" + y);
         }
 
         int mode = 0;
