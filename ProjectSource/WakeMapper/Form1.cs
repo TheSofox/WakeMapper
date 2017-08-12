@@ -205,8 +205,11 @@ namespace WakeMapper
         HttpClient client = new HttpClient();
         private void sendCoord(double x, double y)
         {
-            baseURL.TrimEnd('/');
-            client.GetAsync(baseURL + "/set.php?game=" + currentProfile.mapName + "&key=" + urlKey + "&x=" + x + "&y=" + y);
+            if (!string.IsNullOrWhiteSpace(baseURL))
+            {
+                baseURL.TrimEnd('/');
+                client.GetAsync(baseURL + "/set.php?game=" + currentProfile.mapName + "&key=" + urlKey + "&x=" + x + "&y=" + y);
+            }
         }
 
         int mode = 0;
@@ -525,9 +528,9 @@ namespace WakeMapper
                 //Console.WriteLine("Process loaded at 0x{0:X16}", (long)process.Handle);
                 //Console.WriteLine("DLL loaded at 0x{0:X16}", (long)module.BaseAddress);
 
-                addr = IntPtr.Add(modAddr, 0x0020CA44);
+                addr = IntPtr.Add(modAddr, 0x001F62CC);
                 ReadProcessMemory(ProcessHandle, addr, testBytes, (UIntPtr)testBytes.Length, 0);
-                addr = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x10);
+                addr = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x54);
 
                 ReadProcessMemory(ProcessHandle, addr, testBytes, (UIntPtr)testBytes.Length, 0);
                 tld_gameManager = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x3B8);
