@@ -13,6 +13,7 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
+using System.Reflection;
 
 namespace WakeMapper
 {
@@ -501,6 +502,7 @@ namespace WakeMapper
         IntPtr tld_gameManager, tld_activeScene;
         public void setupTheLongDark(Process nProcess)
         {
+            
             currentLevel = "";
             mapImage = Properties.Resources.TLD_Default_Map;
             map.Image = mapImage;
@@ -519,50 +521,26 @@ namespace WakeMapper
                 //Console.WriteLine("Process loaded at 0x{0:X16}", (long)process.Handle);
                 //Console.WriteLine("DLL loaded at 0x{0:X16}", (long)module.BaseAddress);
 
-                addr = IntPtr.Add(modAddr, 0x0020B574);
+                addr = IntPtr.Add(modAddr, 0x0020CA44);
                 ReadProcessMemory(ProcessHandle, addr, testBytes, (UIntPtr)testBytes.Length, 0);
                 addr = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x10);
 
                 ReadProcessMemory(ProcessHandle, addr, testBytes, (UIntPtr)testBytes.Length, 0);
-                tld_gameManager = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x26C);
+                tld_gameManager = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x3B8);
 
                 ReadProcessMemory(ProcessHandle, tld_gameManager, testBytes, (UIntPtr)testBytes.Length, 0);
                 tld_activeScene = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x3c);
 
 
 
-                //ReadProcessMemory(ProcessHandle, tld_activeScene, testBytes, (UIntPtr)testBytes.Length, 0);
-                //int length; = BitConverter.ToInt32(testBytes, 0).ToString();
-                //displayOutput.Text = BitConverter.ToString(testBytes, 0);
-                //displayOutput.Text = BitConverter.ToString(testBytes, 0);//BitConverter.ToInt32(testBytes, 0).ToString();// "test";// BitConverter.ToSingle(testBytes, 0).ToString();// BitConverter.ToSingle(testBytes, 0);
-                
-                // eastAddress = IntPtr.Add(module.BaseAddress, 0x137A44);
 
-
-                //IntPtr Base1 = IntPtr.Add((IntPtr)vam.ReadInt32(BaseAddress), 0x58);
-                //displayOutput.Text = BitConverter.ToSingle(testBytes,0).ToString();
-
-                /*
-                 "mono.dll"+001F60D4
-                 */
-
-                addr = IntPtr.Add(nProcess.MainModule.BaseAddress, 0x01020110);// (IntPtr)0x01348320;// IntPtr.Add(IntPtr.Zero, 0x00265C4A);// 0x137A54);//0x00265C4A
-
-                ReadProcessMemory(ProcessHandle, addr, testBytes, (UIntPtr)testBytes.Length, 0);
-
-                addr = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x60);
-                ReadProcessMemory(ProcessHandle, addr, testBytes, (UIntPtr)testBytes.Length, 0);
+                //AkSoundEngine.dll+1450A0
+                modAddr = getProcessModuleBaseAddress(nProcess, "AkSoundEngine.dll");//IntPtr.Add(nProcess.MainModule.BaseAddress, 0x01020110);// (IntPtr)0x01348320;// IntPtr.Add(IntPtr.Zero, 0x00265C4A);// 0x137A54);//0x00265C4A
                 
 
-                //addr = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x7A8);
-                //ReadProcessMemory(ProcessHandle, addr, testBytes, (UIntPtr)testBytes.Length, 0);
-
-                //displayOutput.Text = BitConverter.ToSingle(testBytes, 0).ToString();// BitConverter.ToSingle(testBytes, 0);
-
-
-                eastAddress = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x06D0);
-                heightAddress = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x06D4);
-                northAddress = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x06D8);
+                eastAddress = IntPtr.Add(modAddr, 0x1450A0);
+                heightAddress = IntPtr.Add(modAddr, 0x1450A4);
+                northAddress = IntPtr.Add(modAddr, 0x1450A8);
 
                setupExecutable(nProcess);
             }
