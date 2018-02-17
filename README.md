@@ -1,6 +1,6 @@
 # README #
 
-WakeMapper is a program that interacts with video games to display the player's position on a map. The program currently supports Alan Wake, Firewatch and The Long Dark.
+WakeMapper is a program that interacts with video games to display the player's position on a map. The program currently supports Alan Wake and Firewatch. (The Long Dark used to be supported, but various new releases broke compatibility).
 
 
 ![Scheme](Images/WakeMapperScreenshot1.jpg)
