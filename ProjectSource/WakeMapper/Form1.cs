@@ -48,10 +48,13 @@ namespace WakeMapper
         bool justResized = false;
         private void setupMap()
         {
-            drawArea = map.CreateGraphics();
-            bufferBitmap = new Bitmap(map.Width, map.Height);
-            buffer = Graphics.FromImage(bufferBitmap);
-            justResized = true;
+            if(map.Width>0 && map.Height > 0)
+            {
+                drawArea = map.CreateGraphics();
+                bufferBitmap = new Bitmap(map.Width, map.Height);
+                buffer = Graphics.FromImage(bufferBitmap);
+                justResized = true;
+            }
         }
 
         private void map_Resize(object sender, EventArgs e)
