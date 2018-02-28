@@ -73,6 +73,16 @@ namespace WakeMapper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap SkyrimMap {
+            get {
+                object obj = ResourceManager.GetObject("SkyrimMap", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap TLD_CoastalRegion_Map {
             get {
                 object obj = ResourceManager.GetObject("TLD_CoastalRegion_Map", resourceCulture);

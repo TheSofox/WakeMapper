@@ -124,6 +124,7 @@
     <None Include="Resources\TLD_CoastalRegion_Map.jpg" />
     <None Include="Resources\TLD_RavineTransitionZone_Map.jpg" />
     <None Include="Resources\TLD_HighwayTransitionZone_Map.jpg" />
+    <None Include="Resources\SkyrimMap.png" />
     <Content Include="Resources\WakeMapper.ico" />
     <Content Include="WakeMapper.ico" />
   </ItemGroup>

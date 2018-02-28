@@ -1,6 +1,6 @@
 # README #
 
-WakeMapper is a program that interacts with video games to display the player's position on a map. The program currently supports Alan Wake and Firewatch. (The Long Dark used to be supported, but various new releases broke compatibility).
+WakeMapper is a program that interacts with video games to display the player's position on a map. The program currently supports Alan Wake, Firewatch and Skyrim Special Edition. (The Long Dark used to be supported, but various new releases broke compatibility).
 
 
 ![Scheme](Images/WakeMapperScreenshot1.jpg)
@@ -8,6 +8,8 @@ WakeMapper is a program that interacts with video games to display the player's 
 ![Scheme](Images/WakeMapperScreenshot4.jpg)
 
 ![Scheme](Images/WakeMapperScreenshot5.jpg)
+
+![Scheme](Images/WakeMapperScreenshot6.jpg)
 
 # Download #
 64 bit version (supports all games): https://bitbucket.org/Sofox/wakemapper/downloads/WakeMapper64.exe
@@ -18,7 +20,7 @@ The program is standalone, and runs without needing an install.
 
 ### Build Instructions ###
 
-The program is built using Microsoft Visual Studio Community 2015. This free program should be able to open, edit, build and run the program.
+The program is built using Microsoft Visual Studio Community 2015. This free program should be able to open, edit, build and run the program. Not tested with other Visual Studio versions.
 
 Visual Studio Community can be freely downloaded from: https://www.visualstudio.com, although it may require registration.
 
@@ -34,6 +36,8 @@ The Firewatch map technically comes from an in game texture, but more accurately
 
 The Long Dark maps, with the exception of the overview map (provided by the dev team), were created by Whiteberry (@toarda). You can see all her maps (including some versions that have more information) here: https://steamcommunity.com/sharedfiles/filedetails/?id=530202531
 
+Skyrim map provided by GameBanshee: http://www.gamebanshee.com/skyrim/mapofskyrim.php (link provides high quality version of map and text index of locations)
+
 ### Game Credits ###
 
 Alan Wake created by Remedy Entertainment
@@ -41,6 +45,8 @@ Alan Wake created by Remedy Entertainment
 Firewatch created by Campo Santo
 
 The Long Dark created by Hinterland Games
+
+The Elder Scrolls V: Skyrim Special Edition created by Bethesda Game Studios
 
 ### Technical information ###
 

@@ -132,15 +132,19 @@ namespace WakeMapper
         class gameProfile
         {
             private List<gameLevel> levels = new List<gameLevel>();
-            public gameProfile(string n, string fn, bool id, double s, double xOffset, double yOffset, bool sm = true)
+            public gameProfile(string n, string fn, Bitmap m, bool id, double s, double xOffset, double yOffset, bool sm = true)
             {
                 name = n;
                 fullName = fn;
+                map = m;
                 isDouble = id;
                 scale = s;
                 xo = xOffset;
                 yo = yOffset;
                 mapName = name + "Map";
+                eastIndex = 0;
+                heightIndex = 1;
+                northIndex = 2;
             }
             public string name { get; set; }
             public string fullName { get; set; }
@@ -150,6 +154,16 @@ namespace WakeMapper
             public double yo { get; set; }
             public bool showMarker { get; set; }
             public string mapName { get; set; }
+            public Bitmap map { get; set; }
+
+            public string dllName { get; set; }
+            public Int32 offset { get; set; }
+            public Int32 [] offsets { get; set; }
+            public int eastIndex { get; set; }
+            public int northIndex { get; set; }
+            public int heightIndex { get; set; }
+
+
             public void addLevel(string name, double scale, double xOffset, double yOffset)
             {
                 levels.Add(new gameLevel(name, scale, xOffset, yOffset));
@@ -172,10 +186,22 @@ namespace WakeMapper
         gameProfile currentProfile = null;
         private void initGameProfiles()
         {
-            gameProfile wakeProfile = new gameProfile("AlanWake", "Alan Wake", true, 4.1333 * 2, 460, 453);
-            gameProfile firewatchProfile = new gameProfile("Firewatch", "Firewatch", false, -1.93, 698 * 2, -175 * 2);
-            gameProfile tldProfile = new gameProfile("tld", "The Long Dark", false, 1637.0 / 805, 98, 883);
+            gameProfile wakeProfile = new gameProfile("AlanWake", "Alan Wake", Properties.Resources.WakeMap, true, 4.1333 * 2, 460, 453);
+            wakeProfile.dllName = "renderer_sf_Win32.dll";
+            wakeProfile.offset = 0x137A44;
 
+            gameProfile firewatchProfile = new gameProfile("Firewatch", "Firewatch", Properties.Resources.FirewatchMapLarge, false, -1.93, 698 * 2, -175 * 2);
+            firewatchProfile.offset = 0x01348320;
+            firewatchProfile.offsets = new int[]{ 0x4B0, 0x18, 0x18, 0x10, 0x07C8 };
+
+            gameProfile skyrimProfile = new gameProfile("SkyrimSE", "Skyrim", Properties.Resources.SkyrimMap, false, (131181 + 81244) / 507 , 1305.0 / 2.720, 1405.0 / 2.720);
+            skyrimProfile.dllName = null;
+            skyrimProfile.offset = 0x304BDA0;
+            skyrimProfile.northIndex = 1;
+            skyrimProfile.heightIndex = 2;
+
+
+            gameProfile tldProfile = new gameProfile("tld", "The Long Dark", Properties.Resources.TLD_Default_Map, false, 1637.0 / 805, 98, 883);
             tldProfile.addLevel("LakeRegion", 1637.0 / 805, 98, 883);
             tldProfile.addLevel("RavineTransitionZone", 1637.0 / 805, 772, 421-332);
             tldProfile.addLevel("CoastalRegion", 2400.0 / 973, 538, 650); // 2.461538461538462, 538, 650);
@@ -190,7 +216,7 @@ namespace WakeMapper
 
             if (Environment.Is64BitProcess)
             {
-                gameProfiles = new gameProfile[] { wakeProfile, firewatchProfile, tldProfile };
+                gameProfiles = new gameProfile[] { wakeProfile, firewatchProfile, tldProfile, skyrimProfile };
             }
             else
             {
@@ -344,9 +370,21 @@ namespace WakeMapper
                         enableMapDraw = false;
                     }
                 }
+
+                if(currentProfile.name == "SkyrimSE")
+                {
+                    if (!readBool(skyrim_isMapArea))
+                    {
+                        enableMapDraw = false;
+                    }
+                }
                 
             }
-            displayOutput.Text = "Running. You're at: " + north + "  " + east + "\n" + extraText;//" (" + height + ") "
+            displayOutput.Text = "Running. You're at: " + east + " " + north + " ";
+            if(!String.IsNullOrEmpty(extraText))
+                displayOutput.Text+= "\n" + extraText;
+            //if (false == enableMapDraw)
+              //  displayOutput.Text += "\n" + "Using last known location";
             if (north!=0 && east != 0 && enableMapDraw)
             {
                 if (onlineCheckbox.Checked)
@@ -399,21 +437,6 @@ namespace WakeMapper
             return IntPtr.Zero;
         }
 
-        private void setupWake(Process process)
-        {
-            mapImage = Properties.Resources.WakeMap;
-            map.Image = mapImage;
-            //displayOutput.Text = "Okay, Alan Wake is running, let's see what we can do....\n";
-            IntPtr modAddr = getProcessModuleBaseAddress(process, "renderer_sf_Win32.dll");
-            if (modAddr != IntPtr.Zero)
-            {
-                northAddress = IntPtr.Add(modAddr, 0x137A54);
-                eastAddress = IntPtr.Add(modAddr, 0x137A44);
-
-                setupExecutable(process);
-            }
-
-        }
         private void stopExecutable()
         {
             myTimer.Stop();
@@ -446,49 +469,109 @@ namespace WakeMapper
 
         }
 
-        public void setupFirewatch(Process nProcess)
+        private void setupGame(Process process)
         {
-            mapImage = Properties.Resources.FirewatchMapLarge;
+            mapImage = currentProfile.map;
             map.Image = mapImage;
+            string dllName = currentProfile.dllName;
+            Int32 offset = currentProfile.offset;
+            Int32[] offsets = currentProfile.offsets;
             try
             {
-                //  var mod = nProcess.MainModule.BaseAddress;
 
-                // displayOutput.Text = "works." + mod; 
-                // VAMemory vam = new VAMemory("Firewatch");
+                IntPtr baseAddress = IntPtr.Zero;
 
+                if (String.IsNullOrEmpty(dllName))
+                {
+                    baseAddress = IntPtr.Add(process.MainModule.BaseAddress, offset);
+                    if (currentProfile.name == "SkyrimSE")
+                    {
+                        skyrim_isMapArea = IntPtr.Add(process.MainModule.BaseAddress, 0x2F4DC68);
+                    }
+                }
+                else
+                {
+                    baseAddress = getProcessModuleBaseAddress(process, dllName);
+                    if (baseAddress == IntPtr.Zero)
+                        return;
+                    baseAddress = IntPtr.Add(baseAddress, offset);
+                }
 
-                ProcessHandle = OpenProcess(0x10, false, (uint)nProcess.Id);
-                mode = 1;
+                if (offsets != null && offsets.Length > 0)
+                {
+                    ProcessHandle = OpenProcess(0x10, false, (uint)process.Id);
+                    foreach (var of in offsets)
+                    {
+                        baseAddress = getOffsetValue(ProcessHandle, baseAddress, of);
+                    }
 
+                }
 
-                IntPtr addr = IntPtr.Add(nProcess.MainModule.BaseAddress, 0x01348320);// (IntPtr)0x01348320;// IntPtr.Add(IntPtr.Zero, 0x00265C4A);// 0x137A54);//0x00265C4A
+                eastAddress = IntPtr.Add(baseAddress, (currentProfile.isDouble ? 0x8 : 0x4) * currentProfile.eastIndex);
+                heightAddress = IntPtr.Add(baseAddress, (currentProfile.isDouble ? 0x8 : 0x4) * currentProfile.heightIndex);
+                northAddress = IntPtr.Add(baseAddress, (currentProfile.isDouble ? 0x8 : 0x4) * currentProfile.northIndex);
 
-                byte[] testBytes = new byte[4];
-                addr = getOffsetValue(ProcessHandle, addr, 0x4B0);
-                addr = getOffsetValue(ProcessHandle, addr, 0x18);
-                addr = getOffsetValue(ProcessHandle, addr, 0x18);
-                addr = getOffsetValue(ProcessHandle, addr, 0x10);
-                ReadProcessMemory(ProcessHandle, addr, testBytes, (UIntPtr)testBytes.Length, 0);
-
-                eastAddress = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x07C8);
-                northAddress = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x07D0);
-
-               // ReadProcessMemory(ProcessHandle, addr, testBytes, (UIntPtr)testBytes.Length, 0);
-
-                //IntPtr Base1 = IntPtr.Add((IntPtr)vam.ReadInt32(BaseAddress), 0x58);
-                //displayOutput.Text = BitConverter.ToSingle(testBytes,0).ToString();
-                setupExecutable(nProcess);
-
-
+                setupExecutable(process);
 
             }
             catch
             {
                 Console.WriteLine("Failed to open process");
             }
+        }
+        
 
 
+        IntPtr tld_gameManager, tld_activeScene, skyrim_isMapArea;
+        public void setupTheLongDark(Process nProcess)
+        {
+            mapImage = currentProfile.map;
+            map.Image = mapImage;
+            currentLevel = "";
+            currentProfile.mapName = "TLD_Default_Map";
+            sendCoord(-100, -100);
+            try
+            {
+                ProcessHandle = OpenProcess(0x10, false, (uint)nProcess.Id);
+                mode = 1;
+                IntPtr addr;
+                byte[] testBytes = new byte[4];
+
+                IntPtr modAddr = getProcessModuleBaseAddress(nProcess, "mono.dll");
+                
+
+                addr = IntPtr.Add(modAddr, 0x001F62CC);
+                ReadProcessMemory(ProcessHandle, addr, testBytes, (UIntPtr)testBytes.Length, 0);
+                addr = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x54);
+
+                ReadProcessMemory(ProcessHandle, addr, testBytes, (UIntPtr)testBytes.Length, 0);
+                tld_gameManager = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x3B8);
+
+                ReadProcessMemory(ProcessHandle, tld_gameManager, testBytes, (UIntPtr)testBytes.Length, 0);
+                tld_activeScene = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x3c);
+                
+
+                //AkSoundEngine.dll+1450A0
+                modAddr = getProcessModuleBaseAddress(nProcess, "AkSoundEngine.dll");//IntPtr.Add(nProcess.MainModule.BaseAddress, 0x01020110);// (IntPtr)0x01348320;// IntPtr.Add(IntPtr.Zero, 0x00265C4A);// 0x137A54);//0x00265C4A
+
+
+                eastAddress = IntPtr.Add(modAddr, 0x1450A0);
+                heightAddress = IntPtr.Add(modAddr, 0x1450A0 + (currentProfile.isDouble ? 0x8 : 0x4));
+                northAddress = IntPtr.Add(modAddr, 0x1450A0 + (currentProfile.isDouble ? 0x8 : 0x4) * 2);
+
+                setupExecutable(nProcess);
+            }
+            catch
+            {
+                Console.WriteLine("Failed to open process");
+            }
+        }
+
+        public bool readBool(IntPtr address)
+        {
+            byte[] testBytes = new byte[4];
+            ReadProcessMemory(ProcessHandle, address, testBytes, (UIntPtr)testBytes.Length, 0);
+            return BitConverter.ToBoolean(testBytes, 0);
         }
 
         public string readString(IntPtr address)
@@ -504,57 +587,6 @@ namespace WakeMapper
             ReadProcessMemory(ProcessHandle, strAddr, stringBytes, (UIntPtr)stringBytes.Length, 0);
 
             return Encoding.Unicode.GetString(stringBytes);
-        }
-
-        IntPtr tld_gameManager, tld_activeScene;
-        public void setupTheLongDark(Process nProcess)
-        {
-            
-            currentLevel = "";
-            mapImage = Properties.Resources.TLD_Default_Map;
-            map.Image = mapImage;
-            currentProfile.mapName = "TLD_Default_Map";
-            sendCoord(-100, -100);
-            try
-            {
-                ProcessHandle = OpenProcess(0x10, false, (uint)nProcess.Id);
-                mode = 1;
-                IntPtr addr;
-                byte[] testBytes = new byte[4];
-
-                IntPtr modAddr = getProcessModuleBaseAddress(nProcess, "mono.dll");
-
-                //Console.WriteLine(module.FileName);
-                //Console.WriteLine("Process loaded at 0x{0:X16}", (long)process.Handle);
-                //Console.WriteLine("DLL loaded at 0x{0:X16}", (long)module.BaseAddress);
-
-                addr = IntPtr.Add(modAddr, 0x001F62CC);
-                ReadProcessMemory(ProcessHandle, addr, testBytes, (UIntPtr)testBytes.Length, 0);
-                addr = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x54);
-
-                ReadProcessMemory(ProcessHandle, addr, testBytes, (UIntPtr)testBytes.Length, 0);
-                tld_gameManager = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x3B8);
-
-                ReadProcessMemory(ProcessHandle, tld_gameManager, testBytes, (UIntPtr)testBytes.Length, 0);
-                tld_activeScene = IntPtr.Add((IntPtr)BitConverter.ToUInt32(testBytes, 0), 0x3c);
-
-
-
-
-                //AkSoundEngine.dll+1450A0
-                modAddr = getProcessModuleBaseAddress(nProcess, "AkSoundEngine.dll");//IntPtr.Add(nProcess.MainModule.BaseAddress, 0x01020110);// (IntPtr)0x01348320;// IntPtr.Add(IntPtr.Zero, 0x00265C4A);// 0x137A54);//0x00265C4A
-                
-
-                eastAddress = IntPtr.Add(modAddr, 0x1450A0);
-                heightAddress = IntPtr.Add(modAddr, 0x1450A4);
-                northAddress = IntPtr.Add(modAddr, 0x1450A8);
-
-               setupExecutable(nProcess);
-            }
-            catch
-            {
-                Console.WriteLine("Failed to open process");
-            }
         }
 
 
@@ -576,16 +608,11 @@ namespace WakeMapper
                         currentProfile = game;
                         switch (currentProfile.name)
                         {
-                            case "AlanWake":
-                                setupWake(procs[0]);
-                                break;
-                            case "Firewatch":
-                                setupFirewatch(procs[0]);
-                                break;
                             case "tld":
                                 setupTheLongDark(procs[0]);
                                 break;
                             default:
+                                setupGame(procs[0]);
                                 continue;
                         }
                         break;
