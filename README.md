@@ -7,8 +7,6 @@ WakeMapper is a program that interacts with video games to display the player's 
 
 ![Scheme](Images/WakeMapperScreenshot4.jpg)
 
-![Scheme](Images/WakeMapperScreenshot5.jpg)
-
 ![Scheme](Images/WakeMapperScreenshot6.jpg)
 
 # Download #
@@ -34,7 +32,7 @@ The Alan Wake map comes from a scan of official merchandise (as seen here: http:
 
 The Firewatch map technically comes from an in game texture, but more accurately comes from a "clean" high res version of that texture provided by the game's developers: http://blog.camposanto.com/post/140041752129/downloadable-printable-firewatch-maps-for-you-a
 
-The Long Dark maps, with the exception of the overview map (provided by the dev team), were created by Whiteberry (@toarda). You can see all her maps (including some versions that have more information) here: https://steamcommunity.com/sharedfiles/filedetails/?id=530202531
+The Long Dark maps, with the exception of the overview map (provided by the dev team), were created by Whiteberry (@toarda). You can see all her maps (including some versions that have more information) here: https://steamcommunity.com/sharedfiles/filedetails/?id=530202531 (once again, TLD is no longer supported due to new versions being released)
 
 Skyrim map provided by GameBanshee: http://www.gamebanshee.com/skyrim/mapofskyrim.php (link provides high quality version of map and text index of locations)
 
