@@ -16,6 +16,8 @@ WakeMapper is a program that interacts with video games to display the player's 
 
 The program is standalone, and runs without needing an install.
 
+If you have issues running this (eg. "This application was unable to start correctly"), try updating the .NET runtime on your computer.
+
 ### Build Instructions ###
 
 The program is built using Microsoft Visual Studio Community 2015. This free program should be able to open, edit, build and run the program. Not tested with other Visual Studio versions.
