@@ -20,7 +20,7 @@ If you have issues running this (eg. "This application was unable to start corre
 
 ### Build Instructions ###
 
-The program is built using Microsoft Visual Studio Community 2015. This free program should be able to open, edit, build and run the program. Not tested with other Visual Studio versions.
+The program is built using Microsoft Visual Studio Community 2019. This free program should be able to open, edit, build and run the program. Earlier versions build with 2015, but otherwise not tested with other Visual Studio versions.
 
 Visual Studio Community can be freely downloaded from: https://www.visualstudio.com, although it may require registration.
 
