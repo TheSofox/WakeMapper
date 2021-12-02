@@ -9,6 +9,10 @@ WakeMapper is a program that interacts with video games to display the player's 
 
 ![Scheme](Images/WakeMapperScreenshot6.jpg)
 
+# Demonstration #
+
+I have a video demonstrating its use right here (the video focuses more on the Free Camera mode in exploring Alan Wake, but the map program is always visible): https://www.youtube.com/watch?v=jDQ3jAdELf4
+
 # Download #
 64 bit version (supports all games): https://bitbucket.org/Sofox/wakemapper/downloads/WakeMapper64.exe
 
